@@ -1,0 +1,43 @@
+# ─── Backend – Production (multi-stage) ───────────────────────────────────────
+# Stage 1 : compile le projet Maven et produit un JAR exécutable.
+# Stage 2 : image finale allégée avec uniquement le JRE + le JAR.
+#
+# Le cache Maven est exploité via les layers Docker : le pom.xml est copié
+# en premier pour que les dépendances ne soient re-téléchargées que si le
+# pom.xml change.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Stage 1 : Build ───────────────────────────────────────────────────────────
+FROM eclipse-temurin:24-jdk-jammy AS builder
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends maven \
+    && rm -rf /var/lib/apt/lists/*
+
+# Optimisation du cache : dépendances d'abord
+COPY pom.xml ./
+RUN mvn dependency:go-offline -B
+
+# Compilation (les tests sont ignorés en build Docker ; lance-les dans ta CI)
+COPY src ./src
+RUN mvn package -DskipTests
+
+# ── Stage 2 : Runtime ─────────────────────────────────────────────────────────
+FROM eclipse-temurin:24-jre-jammy
+
+WORKDIR /app
+
+# Copie uniquement le JAR depuis le stage de build
+COPY --from=builder /app/target/*.jar app.jar
+
+EXPOSE 8080
+
+# Paramètres JVM recommandés pour un conteneur :
+# -XX:+UseContainerSupport    : détecte les limites mémoire du conteneur
+# -XX:MaxRAMPercentage=75.0   : utilise 75% de la RAM allouée au conteneur
+ENTRYPOINT ["java", \
+            "-XX:+UseContainerSupport", \
+            "-XX:MaxRAMPercentage=75.0", \
+            "-jar", "app.jar"]
