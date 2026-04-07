@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    // ── Java ──────────────────────────────────────────────────────────────────
+    "redhat.java",                      // Language server (autocomplétion, refacto, erreurs)
+    "vscjava.vscode-java-debug",        // Débogueur Java – se connecte au port JDWP 5005
+    "vscjava.vscode-java-test",         // Runner JUnit / TestNG intégré
+    "vscjava.vscode-maven",             // Support Maven (goals, dépendances)
+    // ── Spring ────────────────────────────────────────────────────────────────
+    "vmware.vscode-spring-boot",        // Support Spring (properties, YAML, beans, mappings)
+    "vscjava.vscode-spring-initializr", // Générer un projet Spring depuis VS Code
+    "vscjava.vscode-spring-boot-dashboard", // Dashboard Spring (endpoints, démarrage)
+    // ── Angular ───────────────────────────────────────────────────────────────
+    "loiane.angular-extension-pack",    // Pack Angular complet (Loiane Groner)
+    // ── Docker ────────────────────────────────────────────────────────────────
+    "ms-azuretools.vscode-docker"       // Syntax Docker, gestion des conteneurs/images
+  ]
+}
