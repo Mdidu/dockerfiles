@@ -4,7 +4,7 @@
 # Le cache Maven (~/.m2) est persisté dans un volume nommé pour éviter de
 # re-télécharger les dépendances à chaque rebuild.
 # ──────────────────────────────────────────────────────────────────────────────
-FROM eclipse-temurin:24-jdk-jammy
+FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
