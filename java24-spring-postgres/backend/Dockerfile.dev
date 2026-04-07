@@ -1,0 +1,28 @@
+# ─── Backend – Development ────────────────────────────────────────────────────
+# Spring Boot avec hot-reload via Spring DevTools + port de debug JDWP exposé.
+# Le code source est monté en volume depuis l'hôte (voir compose.dev.yml).
+# Le cache Maven (~/.m2) est persisté dans un volume nommé pour éviter de
+# re-télécharger les dépendances à chaque rebuild.
+# ──────────────────────────────────────────────────────────────────────────────
+FROM eclipse-temurin:24-jdk-jammy
+
+WORKDIR /app
+
+# Installation de Maven
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends maven \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copie du pom.xml seul pour pré-télécharger les dépendances au build de l'image.
+# Le reste des sources est monté en volume.
+COPY pom.xml ./
+RUN mvn dependency:go-offline -B
+
+# Port applicatif Spring Boot
+EXPOSE 8080
+# Port de debug distant (JDWP) – à connecter depuis ton IDE
+EXPOSE 5005
+
+# Lance Spring Boot en mode dev avec le debugger JDWP activé
+CMD ["mvn", "spring-boot:run", \
+     "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]

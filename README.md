@@ -7,9 +7,21 @@ Chaque dossier est un projet autonome avec ses propres `Dockerfile` et `compose.
 
 ## Projets disponibles
 
+### [java24-spring-postgres](./java24-spring-postgres/)
+
+Stack **backend seul** conteneurisée avec :
+
+- **Java 24 + Spring Boot 3.4.x** — hot-reload via Spring DevTools, debug JDWP
+- **PostgreSQL 17** (base de données)
+- **pgAdmin 4** (interface DB, environnement de développement uniquement)
+
+Compatible **Windows via WSL2** et **macOS Apple Silicon (ARM64)**.
+
+---
+
 ### [angular21-java24-spring-postgres](./angular21-java24-spring-postgres/)
 
-Stack full-stack conteneurisée avec :
+Stack **full-stack** conteneurisée avec :
 
 - **Angular 21** (frontend) — dev avec hot-reload, prod servie via Nginx
 - **Java 24 + Spring Boot 3.4.x** (backend) — hot-reload via Spring DevTools, debug JDWP
