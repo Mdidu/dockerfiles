@@ -16,8 +16,8 @@ services:
   # ── Backend Spring Boot ──────────────────────────────────────────────────────
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: ./dockerfile/Dockerfile.prod
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}

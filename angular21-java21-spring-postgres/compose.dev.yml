@@ -23,12 +23,12 @@ services:
   # ── Backend Spring Boot ──────────────────────────────────────────────────────
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: ./dockerfile/Dockerfile.dev
     volumes:
       # Sources montées pour que Spring DevTools détecte les changements
-      - ./backend/src:/app/src
-      - ./backend/pom.xml:/app/pom.xml
+      - ./src:/app/src
+      - ./pom.xml:/app/pom.xml
       # Cache Maven persisté pour éviter de re-télécharger les dépendances
       - maven_cache:/root/.m2
     ports:
